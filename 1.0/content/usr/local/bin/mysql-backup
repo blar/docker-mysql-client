@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 
+MYSQL_HOST=${1:-mysql}
 backup_filename=/tmp/${MYSQL_DATABASE}_$(date +%Y-%m-%d_%H:%M:%S).sql
 backup_archive=/var/backup/mysql/
 
-mysqldump -h $1 -u root --single-transaction --dump-date --result-file=$backup_filename $MYSQL_DATABASE
+mysqldump -h $MYSQL_HOST -u root --single-transaction --dump-date --result-file=$backup_filename $MYSQL_DATABASE
 gzip -9 $backup_filename
 mv $backup_filename.gz $backup_archive
