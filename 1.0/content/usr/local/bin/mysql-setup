@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
 
 apk update
+
+# Alpine installiert den MariaDB-Client, der kompatibel mit MySQL ist.
 apk add mysql-client

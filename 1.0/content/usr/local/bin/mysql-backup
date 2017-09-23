@@ -1,9 +1,17 @@
 #!/usr/bin/env sh
 
-MYSQL_HOST=${1:-mysql}
-backup_filename=/tmp/${MYSQL_DATABASE}_$(date +%Y-%m-%d_%H:%M:%S).sql
+set -e
+
+backup_filename=${MYSQL_DATABASE}_$(date +%Y-%m-%d_%H:%M:%S).sql
+backup_path=/tmp/$backup_filename
 backup_archive=/var/backup/mysql/
 
-mysqldump -h $MYSQL_HOST -u root --single-transaction --dump-date --result-file=$backup_filename $MYSQL_DATABASE
-gzip -9 $backup_filename
-mv $backup_filename.gz $backup_archive
+mysqldump -h $MYSQL_HOST -u $MYSQL_USER --single-transaction --dump-date --result-file=$backup_path $MYSQL_DATABASE
+
+# SQL-Dump komprimieren
+gzip -9 $backup_path
+mv $backup_path.gz $backup_archive
+
+# Symlink auf den letzten Dump um das Wiederherstellen zu erleichtern
+cd $backup_archive
+ln -sf $backup_filename.gz latest.sql.gz
