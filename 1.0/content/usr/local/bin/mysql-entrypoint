@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
 
-config=/root/.my.cnf
-if [ ! -f $config ]; then
-	echo "[client]" > $config
-	echo "password=$MYSQL_ROOT_PASSWORD" >> $config
-fi
+mysql-config-setup
 
 exec $@
