@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+set -e
+
+config=~/.my.cnf
+if [ ! -f $config ]; then
+    echo "[client]" > $config
+    echo "password=$MYSQL_PASSWORD" >> $config
+fi
