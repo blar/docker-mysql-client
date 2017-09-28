@@ -9,7 +9,7 @@ backup_archive=/var/backup/mysql/$(date +%Y-%m-%d)
 
 if [ ! -d "$backup_archive" ]; then
     mkdir $backup_archive
-    ln -s $backup_archive $backup_archive/../latest
+    ln -sfn $backup_archive $backup_archive/../latest
 fi
 
 mysqldump -h $MYSQL_HOST -u $MYSQL_USER --single-transaction --dump-date --result-file=$backup_filename_temp $MYSQL_DATABASE
