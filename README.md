@@ -7,7 +7,9 @@
 ### mysql-backup
 
 Erstellt ein Backup von $MYSQL_DATABASE im Verzeichnis /var/backup/mysql. Dieses Verzeichnis sollte ein eigenes Volume
-sein.
+sein. Im Backupverzeichnis wird für jeden Tag ein neues Verzeichnis mit dem aktuellen Datum angelegt in dem das
+jeweilige Backup gespeichert wird. In einem Datumsverzeichnis können sich mehrere Backups befinden, die an diesem Tag
+erstellt wurden.
 
 ## Umgebungsvariablen
 

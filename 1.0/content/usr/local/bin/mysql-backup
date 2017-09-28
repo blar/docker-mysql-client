@@ -2,16 +2,26 @@
 
 set -e
 
-backup_filename=${MYSQL_DATABASE}_$(date +%Y-%m-%d_%H:%M:%S).sql
-backup_path=/tmp/$backup_filename
-backup_archive=/var/backup/mysql/
+backup_filename_timestamp=${MYSQL_DATABASE}_$(date +%Y-%m-%d_%H:%M:%S).sql
+backup_filename_latest=${MYSQL_DATABASE}_latest.sql
+backup_filename_temp=/tmp/$backup_filename_timestamp
+backup_archive=/var/backup/mysql/$(date +%Y-%m-%d)
 
-mysqldump -h $MYSQL_HOST -u $MYSQL_USER --single-transaction --dump-date --result-file=$backup_path $MYSQL_DATABASE
+if [ ! -d "$backup_archive" ]; then
+    mkdir $backup_archive
+fi
+
+mysqldump -h $MYSQL_HOST -u $MYSQL_USER --single-transaction --dump-date --result-file=$backup_filename_temp $MYSQL_DATABASE
 
 # SQL-Dump komprimieren
-gzip -9 $backup_path
-mv $backup_path.gz $backup_archive
+if [ "$MYSQL_BACKUP_COMPRESS" = "yes" ]; then
+    gzip -9 $backup_filename_temp
+    backup_filename_temp=$backup_filename_temp.gz
+    backup_filename_latest=$backup_filename_latest.gz
+fi
+
+mv $backup_filename_temp $backup_archive
 
 # Symlink auf den letzten Dump um das Wiederherstellen zu erleichtern
 cd $backup_archive
-ln -sf $backup_filename.gz latest.sql.gz
+ln -sf $backup_filename_timestamp $backup_filename_latest
