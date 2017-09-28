@@ -17,7 +17,7 @@ mysqldump -h $MYSQL_HOST -u $MYSQL_USER --single-transaction --dump-date --resul
 # SQL-Dump komprimieren
 if [ "$MYSQL_BACKUP_COMPRESS" = "yes" ]; then
     gzip -9 $backup_filename_temp
-    $backup_filename_timestamp=$backup_filename_timestamp.gz
+    backup_filename_timestamp=$backup_filename_timestamp.gz
     backup_filename_temp=$backup_filename_temp.gz
     backup_filename_latest=$backup_filename_latest.gz
 fi
