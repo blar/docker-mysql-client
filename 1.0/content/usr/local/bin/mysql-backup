@@ -12,7 +12,8 @@ if [ ! -d "$backup_archive" ]; then
     ln -sfn $(basename $backup_archive) $backup_archive/../latest
 fi
 
-mysqldump -h $MYSQL_HOST -u $MYSQL_USER --single-transaction --dump-date --quick --result-file=$backup_filename_temp $MYSQL_DATABASE
+# mysqldump -h $MYSQL_HOST -u $MYSQL_USER --single-transaction --dump-date --quick --result-file=$backup_filename_temp $MYSQL_DATABASE
+mysqldump -h $MYSQL_HOST -u $MYSQL_USER --single-transaction --dump-date --quick $MYSQL_DATABASE > $backup_filename_temp
 
 # SQL-Dump komprimieren
 if [ "$MYSQL_BACKUP_COMPRESS" = "yes" ]; then
